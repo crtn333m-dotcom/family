@@ -1,146 +1,136 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'projects_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
-
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(const Duration(seconds: 3), () {
-      if (mounted) {
-        Navigator.pushReplacementNamed(context, '/onboarding');
-      }
-    });
-  }
+  int _page = 0;
+
+  final _pages = const [
+    _SplashPage(
+      emoji: '🌱',
+      title: 'مرحباً بك في سلالتي',
+      subtitle: 'ابنِ شجرة نسبك بطريقة بصرية احترافية',
+    ),
+    _SplashPage(
+      emoji: '🌿',
+      title: 'أضف جذعاً وأغصاناً',
+      subtitle: 'كل غصن يمثل فرداً أو فرعاً من عائلتك',
+    ),
+    _SplashPage(
+      emoji: '🌳',
+      title: 'صدّر وشارك شجرتك',
+      subtitle: 'احفظ شجرتك كصورة وشاركها مع عائلتك',
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bg = isDark ? const Color(0xFF0C0C0C) : const Color(0xFFF4F0EA);
+    final accent = const Color(0xFFD4A55A);
+
     return Scaffold(
-      backgroundColor: const Color(0xFF3E2723),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CustomPaint(
-              size: const Size(200, 250),
-              painter: SplashTreePainter(),
-            ).animate().fadeIn(duration: 1200.ms).scale(
-                  begin: const Offset(0.5, 0.5),
-                ),
-            const SizedBox(height: 32),
-            const Text(
-              'سلالتي',
-              style: TextStyle(
-                fontSize: 48,
-                fontFamily: 'Amiri',
-                color: Color(0xFFFFD54F),
-                fontWeight: FontWeight.bold,
+      backgroundColor: bg,
+      body: SafeArea(
+        child: Column(children: [
+          Expanded(
+            child: PageView.builder(
+              itemCount: _pages.length,
+              onPageChanged: (i) => setState(() => _page = i),
+              itemBuilder: (_, i) => _pages[i],
+            ),
+          ),
+          // Dots
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(_pages.length, (i) => AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              margin: const EdgeInsets.symmetric(horizontal: 4),
+              width: _page == i ? 24 : 8,
+              height: 8,
+              decoration: BoxDecoration(
+                color: _page == i ? accent : accent.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(4),
               ),
-            ).animate().fadeIn(delay: 600.ms, duration: 800.ms).slideY(
-                  begin: 0.3,
-                  end: 0,
+            )),
+          ),
+          const SizedBox(height: 32),
+          // زر البدء
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 32),
+            child: SizedBox(
+              width: double.infinity,
+              height: 56,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: accent,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16)),
+                  elevation: 0,
                 ),
-            const SizedBox(height: 12),
-            const Text(
-              'اكتشف جذورك وابنِ شجرتك',
-              style: TextStyle(
-                fontSize: 18,
-                fontFamily: 'Amiri',
-                color: Color(0xFFA5D6A7),
+                onPressed: () => Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => const ProjectsScreen()),
+                ),
+                child: Text(
+                  _page == _pages.length - 1 ? 'ابدأ الآن' : 'التالي',
+                  style: const TextStyle(
+                      fontFamily: 'Amiri', fontSize: 18,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
-            ).animate().fadeIn(delay: 1000.ms, duration: 800.ms),
-            const SizedBox(height: 60),
-            const CircularProgressIndicator(
-              color: Color(0xFFFFD54F),
-              strokeWidth: 2,
-            ).animate().fadeIn(delay: 1500.ms),
-          ],
-        ),
+            ),
+          ),
+          const SizedBox(height: 40),
+        ]),
       ),
     );
   }
 }
 
-class SplashTreePainter extends CustomPainter {
+class _SplashPage extends StatelessWidget {
+  final String emoji, title, subtitle;
+  const _SplashPage({
+    required this.emoji, required this.title, required this.subtitle});
+
   @override
-  void paint(Canvas canvas, Size size) {
-    final trunkPaint = Paint()
-      ..color = const Color(0xFF6D4C41)
-      ..strokeWidth = 28
-      ..strokeCap = StrokeCap.round
-      ..style = PaintingStyle.stroke;
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textColor = isDark ? const Color(0xFFF2EDE6) : const Color(0xFF18120A);
 
-    final branchPaint = Paint()
-      ..color = const Color(0xFF8D6E63)
-      ..strokeWidth = 12
-      ..strokeCap = StrokeCap.round
-      ..style = PaintingStyle.stroke;
-
-    final leafPaint = Paint()
-      ..color = const Color(0xFF388E3C)
-      ..style = PaintingStyle.fill;
-
-    final trunkPath = Path()
-      ..moveTo(size.width / 2, size.height)
-      ..quadraticBezierTo(
-        size.width / 2 + 10,
-        size.height * 0.6,
-        size.width / 2,
-        size.height * 0.4,
-      );
-    canvas.drawPath(trunkPath, trunkPaint);
-
-    for (final isLeft in [true, false]) {
-      final direction = isLeft ? -1.0 : 1.0;
-      final startX = size.width / 2;
-      final startY = size.height * 0.5;
-
-      final branch1 = Path()
-        ..moveTo(startX, startY)
-        ..quadraticBezierTo(
-          startX + direction * 40,
-          startY - 30,
-          startX + direction * 70,
-          startY - 60,
-        );
-      canvas.drawPath(branch1, branchPaint);
-
-      canvas.drawOval(
-        Rect.fromCenter(
-          center: Offset(startX + direction * 75, startY - 70),
-          width: 35,
-          height: 50,
-        ),
-        leafPaint,
-      );
-
-      final branch2 = Path()
-        ..moveTo(startX, size.height * 0.35)
-        ..quadraticBezierTo(
-          startX + direction * 55,
-          size.height * 0.25,
-          startX + direction * 85,
-          size.height * 0.15,
-        );
-      canvas.drawPath(branch2, branchPaint);
-
-      canvas.drawOval(
-        Rect.fromCenter(
-          center: Offset(startX + direction * 90, size.height * 0.1),
-          width: 30,
-          height: 45,
-        ),
-        leafPaint,
-      );
-    }
+    return Padding(
+      padding: const EdgeInsets.all(40),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(emoji, style: const TextStyle(fontSize: 96))
+              .animate().scale(duration: 600.ms, curve: Curves.elasticOut),
+          const SizedBox(height: 40),
+          Text(title,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: 'Amiri', fontSize: 28,
+              fontWeight: FontWeight.bold, color: textColor,
+            ),
+          ).animate().fadeIn(delay: 200.ms).slideY(begin: 0.2),
+          const SizedBox(height: 16),
+          Text(subtitle,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: 'Amiri', fontSize: 16,
+              color: textColor.withOpacity(0.6), height: 1.6,
+            ),
+          ).animate().fadeIn(delay: 400.ms),
+        ],
+      ),
+    );
   }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
