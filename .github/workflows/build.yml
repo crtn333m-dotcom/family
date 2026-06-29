@@ -22,6 +22,12 @@ jobs:
         with:
           flutter-version: '3.24.0'
 
+      - name: Create Flutter project structure
+        run: |
+          flutter create --org com.example --project-name sulalati temp_project
+          cp -r temp_project/android .
+          rm -rf temp_project
+
       - name: Create asset directories
         run: |
           mkdir -p assets/fonts
