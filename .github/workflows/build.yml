@@ -1,0 +1,45 @@
+name: Build Flutter APK
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'
+
+      - name: Create asset directories
+        run: |
+          mkdir -p assets/fonts
+          mkdir -p assets/images
+
+      - name: Download Amiri Font
+        run: |
+          curl -L "https://github.com/google/fonts/raw/main/ofl/amiri/Amiri-Regular.ttf" -o assets/fonts/Amiri-Regular.ttf
+          curl -L "https://github.com/google/fonts/raw/main/ofl/amiri/Amiri-Bold.ttf" -o assets/fonts/Amiri-Bold.ttf
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: sulalati-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
