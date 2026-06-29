@@ -1,0 +1,36 @@
+name: sulalati
+description: "سلالتي - تطبيق شجرة العائلة"
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  shared_preferences: ^2.3.2
+  path_provider: ^2.1.4
+  screenshot: ^3.0.0
+  share_plus: ^10.0.2
+  google_fonts: ^6.2.1
+  uuid: ^4.4.2
+  flutter_animate: ^4.5.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  fonts:
+    - family: Amiri
+      fonts:
+        - asset: assets/fonts/Amiri-Regular.ttf
+        - asset: assets/fonts/Amiri-Bold.ttf
+  assets:
+    - assets/fonts/
+    - assets/images/
