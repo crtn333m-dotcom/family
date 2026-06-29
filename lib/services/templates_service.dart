@@ -138,7 +138,7 @@ class TemplatesService {
           angle: side * (0.4 + gen * 0.12),
           length: 90 + gen * 10,
           headRadius: 24 + gen * 2,
-          thickness: 14 - gen,
+          thickness: (14 - gen).toDouble(), // ✅ تم التصحيح
         );
         b.leaves.add(LeafModel(
           id: _uuid.v4(), name: 'سلف',
