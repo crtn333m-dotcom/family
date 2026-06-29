@@ -28,6 +28,16 @@ jobs:
           cp -r temp_project/android .
           rm -rf temp_project
 
+      - name: Fix Kotlin version in settings.gradle
+        run: |
+          sed -i 's/id "org.jetbrains.kotlin.android" version "[^"]*"/id "org.jetbrains.kotlin.android" version "1.9.22"/' android/settings.gradle
+          cat android/settings.gradle
+
+      - name: Fix Kotlin version in build.gradle
+        run: |
+          sed -i 's/ext.kotlin_version = .*/ext.kotlin_version = "1.9.22"/' android/build.gradle || true
+          cat android/build.gradle
+
       - name: Create asset directories
         run: |
           mkdir -p assets/fonts
