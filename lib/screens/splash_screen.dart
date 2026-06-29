@@ -1,4 +1,4 @@
-Enterimport 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'onboarding_screen.dart';
 
@@ -31,7 +31,6 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // شجرة SVG مرسومة
             CustomPaint(
               size: const Size(200, 250),
               painter: SplashTreePainter(),
@@ -39,9 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 .animate()
                 .fadeIn(duration: 1200.ms)
                 .scale(begin: const Offset(0.5, 0.5)),
-
             const SizedBox(height: 32),
-
             const Text(
               'سلالتي',
               style: TextStyle(
@@ -49,15 +46,12 @@ class _SplashScreenState extends State<SplashScreen> {
                 fontFamily: 'Amiri',
                 color: Color(0xFFFFD54F),
                 fontWeight: FontWeight.bold,
-                letterSpacing: 2,
               ),
             )
                 .animate()
                 .fadeIn(delay: 600.ms, duration: 800.ms)
                 .slideY(begin: 0.3, end: 0),
-
             const SizedBox(height: 12),
-
             const Text(
               'اكتشف جذورك وابنِ شجرتك',
               style: TextStyle(
@@ -65,101 +59,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 fontFamily: 'Amiri',
                 color: Color(0xFFA5D6A7),
               ),
-            )
-                .animate()
-                .fadeIn(delay: 1000.ms, duration: 800.ms),
-
+            ).animate().fadeIn(delay: 1000.ms, duration: 800.ms),
             const SizedBox(height: 60),
-
             const CircularProgressIndicator(
               color: Color(0xFFFFD54F),
-              strokeWidth: 2,
-            )
-                .animate()
-                .fadeIn(delay: 1500.ms),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class SplashTreePainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final trunkPaint = Paint()
-      ..color = const Color(0xFF6D4C41)
-      ..strokeWidth = 28
-      ..strokeCap = StrokeCap.round
-      ..style = PaintingStyle.stroke;
-
-    final branchPaint = Paint()
-      ..color = const Color(0xFF8D6E63)
-      ..strokeWidth = 12
-      ..strokeCap = StrokeCap.round
-      ..style = PaintingStyle.stroke;
-
-    final leafPaint = Paint()
-      ..color = const Color(0xFF388E3C)
-      ..style = PaintingStyle.fill;
-
-    // الجذع
-    final trunkPath = Path();
-    trunkPath.moveTo(size.width / 2, size.height);
-    trunkPath.quadraticBezierTo(
-      size.width / 2 + 10,
-      size.height * 0.6,
-      size.width / 2,
-      size.height * 0.4,
-    );
-    canvas.drawPath(trunkPath, trunkPaint);
-
-    // الأغصان
-    _drawBranch(canvas, branchPaint, leafPaint, size, true);
-    _drawBranch(canvas, branchPaint, leafPaint, size, false);
-  }
-
-  void _drawBranch(Canvas canvas, Paint branchPaint, Paint leafPaint,
-      Size size, bool isLeft) {
-    final direction = isLeft ? -1.0 : 1.0;
-    final startX = size.width / 2;
-    final startY = size.height * 0.5;
-
-    final path = Path();
-    path.moveTo(startX, startY);
-    path.quadraticBezierTo(
-      startX + direction * 40,
-      startY - 30,
-      startX + direction * 70,
-      startY - 60,
-    );
-    canvas.drawPath(path, branchPaint);
-
-    // ورقة
-    final leafCenter = Offset(startX + direction * 75, startY - 70);
-    canvas.drawOval(
-      Rect.fromCenter(center: leafCenter, width: 35, height: 50),
-      leafPaint,
-    );
-
-    // غصن ثاني
-    final path2 = Path();
-    path2.moveTo(startX, size.height * 0.35);
-    path2.quadraticBezierTo(
-      startX + direction * 55,
-      size.height * 0.25,
-      startX + direction * 85,
-      size.height * 0.15,
-    );
-    canvas.drawPath(path2, branchPaint);
-
-    final leafCenter2 = Offset(startX + direction * 90, size.height * 0.1);
-    canvas.drawOval(
-      Rect.fromCenter(center: leafCenter2, width: 30, height: 45),
-      leafPaint,
-    );
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-}
