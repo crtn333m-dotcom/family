@@ -36,18 +36,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(3, (i) => AnimatedContainer(
-                    duration: const Duration(milliseconds: 300),
-                    margin: const EdgeInsets.symmetric(horizontal: 4),
-                    width: _currentPage == i ? 28 : 8,
-                    height: 8,
-                    decoration: BoxDecoration(
-                      color: _currentPage == i
-                          ? const Color(0xFFFFD54F)
-                          : const Color(0xFF6D4C41),
-                      borderRadius: BorderRadius.circular(4),
+                  children: List.generate(
+                    3,
+                    (i) => AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      margin: const EdgeInsets.symmetric(horizontal: 4),
+                      width: _currentPage == i ? 28 : 8,
+                      height: 8,
+                      decoration: BoxDecoration(
+                        color: _currentPage == i
+                            ? const Color(0xFFFFD54F)
+                            : const Color(0xFF6D4C41),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
                     ),
-                  )),
+                  ),
                 ),
                 const SizedBox(height: 24),
                 Padding(
@@ -113,12 +116,14 @@ class _Page1 extends StatelessWidget {
       ),
       child: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
+          padding: const EdgeInsets.fromLTRB(32, 80, 32, 120),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text('﴿', style: TextStyle(fontSize: 60, color: Color(0xFFFFD54F)))
-                  .animate().fadeIn(duration: 800.ms),
+              const Text(
+                '﴿',
+                style: TextStyle(fontSize: 60, color: Color(0xFFFFD54F)),
+              ).animate().fadeIn(duration: 800.ms),
               const SizedBox(height: 24),
               const Text(
                 'يَا أَيُّهَا النَّاسُ إِنَّا خَلَقْنَاكُم مِّن ذَكَرٍ وَأُنثَىٰ وَجَعَلْنَاكُمْ شُعُوبًا وَقَبَائِلَ لِتَعَارَفُوا',
@@ -163,12 +168,14 @@ class _Page2 extends StatelessWidget {
       ),
       child: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
+          padding: const EdgeInsets.fromLTRB(32, 80, 32, 120),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text('❝', style: TextStyle(fontSize: 60, color: Color(0xFFFFD54F)))
-                  .animate().fadeIn(duration: 800.ms),
+              const Text(
+                '❝',
+                style: TextStyle(fontSize: 60, color: Color(0xFFFFD54F)),
+              ).animate().fadeIn(duration: 800.ms),
               const SizedBox(height: 24),
               const Text(
                 'تعلَّموا من أنسابكم ما تصلون به أرحامكم',
@@ -218,10 +225,9 @@ class _Page3 extends StatelessWidget {
         ),
       ),
       child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(32, 60, 32, 120),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
                 'إهداء',
